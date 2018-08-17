@@ -23,13 +23,17 @@
 	"ResourceModules": {
 		"ext.savespinner": {
 			"styles": [
-				"modules/style.css"
+				"style.less"
 			],
 			"scripts": [
-				"modules/script.js"
+				"script.js"
 			],
 			"position": "bottom"
 		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "modules",
+		"remoteExtPath": "SaveSpinner/modules"
 	},
 	"manifest_version": 2
 }
