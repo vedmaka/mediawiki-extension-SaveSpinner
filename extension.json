@@ -1,0 +1,35 @@
+{
+	"name": "SaveSpinner",
+	"author": [
+		"Alexey"
+	],
+	"license-name": "MIT",
+	"url": "https://www.mediawiki.org/wiki/Extension:SaveSpinner",
+	"descriptionmsg": "savespinner-desc",
+	"type": "extension",
+	"MessagesDirs": {
+		"SaveSpinner": [
+			"i18n"
+		]
+	},
+	"Hooks": {
+		"EditPage::showEditForm:initial": [
+			"SaveSpinner::onShowEditForm"
+		]
+	},
+	"AutoloadClasses": {
+		"SaveSpinner": "SaveSpinner.php"
+	},
+	"ResourceModules": {
+		"ext.savespinner": {
+			"styles": [
+				"modules/style.css"
+			],
+			"scripts": [
+				"modules/script.js"
+			],
+			"position": "bottom"
+		}
+	},
+	"manifest_version": 2
+}
