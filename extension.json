@@ -15,6 +15,9 @@
 	"Hooks": {
 		"EditPage::showEditForm:initial": [
 			"SaveSpinner::onShowEditForm"
+		],
+		"PageForms::RenderingEnd": [
+			"SaveSpinner::onRenderingEnd"
 		]
 	},
 	"AutoloadClasses": {

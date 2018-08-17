@@ -10,4 +10,9 @@ class SaveSpinner {
 		$output->addModules('ext.savespinner');
 	}
 
+	public static function onRenderingEnd( $form_text ) {
+		global $wgOut;
+		$wgOut->addModules('ext.savespinner');
+	}
+
 }

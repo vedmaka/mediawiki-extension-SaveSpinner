@@ -10,26 +10,39 @@
 			previewBtn = document.getElementById( 'wpPreview' ),
 			diffBtn = document.getElementById( 'wpDiff' );
 
-		this.spinner = document.createElement( 'DIV' );
-		this.spinner.classList.add( 'savespinner-wrapper' );
-		this.spinner.innerHTML = 'Loading...';
-		document.querySelector( 'body' ).appendChild( this.spinner );
+		this.buildSpinnerWrapper();
 
-		if( saveBtn ) {
+		if ( saveBtn ) {
 			saveBtn.addEventListener( 'click', this.onClick.bind( this ) );
 		}
 
-		if( previewBtn ) {
+		if ( previewBtn ) {
 			previewBtn.addEventListener( 'click', this.onClick.bind( this ) );
 		}
 
-		if( diffBtn ) {
+		if ( diffBtn ) {
 			diffBtn.addEventListener( 'click', this.onClick.bind( this ) );
 		}
+
+		/*
+
+		Not sure if we actually need this, but worth to save for later.
+
+		if ( mw.config.get( 'wgAction' ) === 'formedit' ||
+			mw.config.get( 'wgCanonicalSpecialPageName' ) === 'FormEdit' ) {
+		}
+		*/
+
 	};
 
-	SaveSpinner.prototype.onClick = function ( event ) {
-		// event.preventDefault();
+	SaveSpinner.prototype.buildSpinnerWrapper = function () {
+		this.spinner = document.createElement( 'DIV' );
+		this.spinner.classList.add( 'savespinner-wrapper' );
+		this.spinner.innerHTML = '<div class="lds-ring"><div></div><div></div><div></div><div></div></div>';
+		document.querySelector( 'body' ).appendChild( this.spinner );
+	};
+
+	SaveSpinner.prototype.onClick = function () {
 		this.displaySpinner();
 	};
 
@@ -37,8 +50,19 @@
 		this.spinner.classList.add( 'savespinner-wrapper--visible' );
 	};
 
-	mw.SaveSpinner = SaveSpinner;
+	mediaWiki.SaveSpinner = SaveSpinner;
 
 }( jQuery, mediaWiki ) );
 
 var spinner = new mediaWiki.SaveSpinner();
+
+/*
+
+PageForms "preview" button is actually being replaced with a new node dynamically
+so it requires a little bit more efforts to make it display loading spinner
+without intrusion into PageForms code.
+
+$.fn.pfAjaxPreview = ( function ( orig ) {
+	return orig;
+} )( $.fn.pfAjaxPreview );
+*/
