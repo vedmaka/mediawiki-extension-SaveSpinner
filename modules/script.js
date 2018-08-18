@@ -17,21 +17,25 @@
 		}
 
 		if ( previewBtn ) {
-			previewBtn.addEventListener( 'click', this.onClick.bind( this ) );
+			// Hack for PageForms preview button - there is no better way so far without intrusion
+			// into PageForms scripts or this requires deeper investigation
+			if ( mw.config.get( 'wgAction' ) === 'formedit' ||
+				mw.config.get( 'wgCanonicalSpecialPageName' ) === 'FormEdit' ) {
+				var self = this;
+				$( document ).on( 'click', '#wpPreview', function ( event ) {
+					self.onClick( event );
+					setTimeout( function () {
+						self.hideSpinner();
+					}, 3000 );
+				} );
+			} else {
+				previewBtn.addEventListener( 'click', this.onClick.bind( this ) );
+			}
 		}
 
 		if ( diffBtn ) {
 			diffBtn.addEventListener( 'click', this.onClick.bind( this ) );
 		}
-
-		/*
-
-		Not sure if we actually need this, but worth to save for later.
-
-		if ( mw.config.get( 'wgAction' ) === 'formedit' ||
-			mw.config.get( 'wgCanonicalSpecialPageName' ) === 'FormEdit' ) {
-		}
-		*/
 
 	};
 
@@ -42,12 +46,16 @@
 		document.querySelector( 'body' ).appendChild( this.spinner );
 	};
 
-	SaveSpinner.prototype.onClick = function () {
+	SaveSpinner.prototype.onClick = function ( event ) {
 		this.displaySpinner();
 	};
 
 	SaveSpinner.prototype.displaySpinner = function () {
 		this.spinner.classList.add( 'savespinner-wrapper--visible' );
+	};
+
+	SaveSpinner.prototype.hideSpinner = function () {
+		this.spinner.classList.remove( 'savespinner-wrapper--visible' );
 	};
 
 	mediaWiki.SaveSpinner = SaveSpinner;
@@ -57,12 +65,8 @@
 var spinner = new mediaWiki.SaveSpinner();
 
 /*
-
 PageForms "preview" button is actually being replaced with a new node dynamically
 so it requires a little bit more efforts to make it display loading spinner
 without intrusion into PageForms code.
-
-$.fn.pfAjaxPreview = ( function ( orig ) {
-	return orig;
-} )( $.fn.pfAjaxPreview );
 */
+
