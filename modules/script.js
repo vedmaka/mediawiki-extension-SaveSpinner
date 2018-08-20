@@ -2,6 +2,7 @@
 
 	function SaveSpinner() {
 		this.spinner = null;
+		this.isForm = false;
 		this.initialize();
 	}
 
@@ -9,6 +10,11 @@
 		var saveBtn = document.getElementById( 'wpSave' ),
 			previewBtn = document.getElementById( 'wpPreview' ),
 			diffBtn = document.getElementById( 'wpDiff' );
+
+		if ( mw.config.get( 'wgAction' ) === 'formedit' ||
+			mw.config.get( 'wgCanonicalSpecialPageName' ) === 'FormEdit' ) {
+			this.isForm = true;
+		}
 
 		this.buildSpinnerWrapper();
 
@@ -19,8 +25,7 @@
 		if ( previewBtn ) {
 			// Hack for PageForms preview button - there is no better way so far without intrusion
 			// into PageForms scripts or this requires deeper investigation
-			if ( mw.config.get( 'wgAction' ) === 'formedit' ||
-				mw.config.get( 'wgCanonicalSpecialPageName' ) === 'FormEdit' ) {
+			if ( this.isForm ) {
 				var self = this;
 				$( document ).on( 'click', '#wpPreview', function ( event ) {
 					self.onClick( event );
@@ -46,7 +51,13 @@
 		document.querySelector( 'body' ).appendChild( this.spinner );
 	};
 
-	SaveSpinner.prototype.onClick = function ( event ) {
+	SaveSpinner.prototype.onClick = function () {
+
+		// This leads to validateAll be called twice
+		if ( this.isForm && !validateAll() ) {
+			return;
+		}
+
 		this.displaySpinner();
 	};
 
