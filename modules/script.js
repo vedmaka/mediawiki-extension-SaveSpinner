@@ -3,7 +3,13 @@
 	function SaveSpinner() {
 		this.spinner = null;
 		this.isForm = false;
+
+		if ( this.isPopupIframe() ) {
+			return;
+		}
+
 		this.initialize();
+
 	}
 
 	SaveSpinner.prototype.initialize = function () {
@@ -67,6 +73,14 @@
 
 	SaveSpinner.prototype.hideSpinner = function () {
 		this.spinner.classList.remove( 'savespinner-wrapper--visible' );
+	};
+
+	SaveSpinner.prototype.isPopupIframe = function () {
+		try {
+			return ( ( window.self !== window.top ) && window.self.frameElement.classList.contains( 'popupform-innerdocument' ) );
+		} catch ( e ) {
+			return true;
+		}
 	};
 
 	mediaWiki.SaveSpinner = SaveSpinner;
