@@ -88,10 +88,3 @@
 }( jQuery, mediaWiki ) );
 
 var spinner = new mediaWiki.SaveSpinner();
-
-/*
-PageForms "preview" button is actually being replaced with a new node dynamically
-so it requires a little bit more efforts to make it display loading spinner
-without intrusion into PageForms code.
-*/
-
