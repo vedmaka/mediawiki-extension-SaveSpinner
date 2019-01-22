@@ -48,6 +48,9 @@
 			diffBtn.addEventListener( 'click', this.onClick.bind( this ) );
 		}
 
+		// Fixes FF problem with navigating back after form submit
+		window.onunload = function () {};
+
 	};
 
 	SaveSpinner.prototype.buildSpinnerWrapper = function () {
